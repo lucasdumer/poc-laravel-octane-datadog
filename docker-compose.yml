@@ -25,6 +25,19 @@ services:
       - '3306'
     volumes:
       - ./mydbdata:/var/lib/mysql
+  datadog:
+    image: gcr.io/datadoghq/agent:7
+    links:
+     - redis # ensures that redis is a host that the container can find
+     - web # ensures that the web app can send metrics
+    environment:
+     - DD_SITE=us5.datadoghq.com
+     - DD_API_KEY=
+     - DD_LOGS_ENABLED=true
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /proc/:/host/proc/:ro
+     - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 
 volumes:
   my-db:
