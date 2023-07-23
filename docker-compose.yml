@@ -1,0 +1,30 @@
+version: '3'
+services:
+  plod:
+    build: ./
+    working_dir: /var/www/html/
+    volumes:
+      - ./public/.:/var/www/html/public/
+    ports:
+      - 8000:8000
+    links:
+      - plod-db
+  plod-db:
+    container_name: plod-db
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./mydbdata:/var/lib/mysql
+
+volumes:
+  my-db:
